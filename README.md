@@ -1,6 +1,9 @@
 # NeuralNetworks
 Introducing a lightweight and specialized neural network library for C#, meticulously designed to complement evolutionary algorithms. Our library is optimized for the crucial task of computing forward passes within neural networks, without the overhead of built-in backpropagation or conventional learning algorithms.
 
+## Fork für Backpropagation ;-)
+I'm trying to integrate backpropagation transparently so that both learning methods can be used without changing the speed and resource utilization during inference.
+
 ## Key Features:
 - Efficiency and Memory Optimization: Our neural network library prioritizes resource efficiency, minimizing memory usage and allocations. It achieves this by utilizing C# float arrays for inputs and outputs, while intelligently reusing arrays to enhance performance across successive passes.
 - Keras like API for a familiar interface.
