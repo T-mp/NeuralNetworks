@@ -14,12 +14,12 @@ namespace Ivankarez.NeuralNetworks.Layers
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
 
-        private readonly IActivation activation;
+        protected readonly IActivation activation;
 
-        private float[,] weights;
-        private float[] nodeValues;
-        private float[] biases;
-        private readonly bool useBias;
+        protected float[,] weights;
+        protected float[] nodeValues;
+        protected float[] biases;
+        protected readonly bool useBias;
 
         public DenseLayer(int nodeCount, IActivation activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)
         {
@@ -47,7 +47,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             Parameters.Add("weights", weights);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
             {
