@@ -4,9 +4,10 @@ namespace Ivankarez.NeuralNetworks.Activations
 {
     public class LeakyReluActivation : IActivation
     {
-        private readonly float alpha;
+        protected readonly float alpha;
 
-        public LeakyReluActivation(float alpha) {
+        public LeakyReluActivation(float alpha)
+        {
             this.alpha = alpha;
         }
 

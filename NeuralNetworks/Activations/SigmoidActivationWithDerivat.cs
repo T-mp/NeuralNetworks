@@ -2,9 +2,9 @@
 
 namespace Ivankarez.NeuralNetworks.Activations
 {
-    public class SigmoidActivationWithRevert : SigmoidActivation, IActivationWithRevert
+    public class SigmoidActivationWithDerivat : SigmoidActivation, IActivationWithDerivat
     {
-        public float Revert(float input)
+        public float Derivat(float input)
         {
             return input * (1f - input);
         }

@@ -7,7 +7,7 @@ namespace Ivankarez.NeuralNetworks.Layers
     {
         protected float[] Inputs;
 
-        public DenseLayerWithBackpropagation(int nodeCount, IActivationWithRevert activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer) :
+        public DenseLayerWithBackpropagation(int nodeCount, IActivationWithDerivat activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer) :
             base(nodeCount, activation, useBias, kernelInitializer, biasInitializer)
         {
         }
@@ -20,14 +20,14 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public float[] Backward(float[] outputError, float learningRate)
         {
-            var derivative = activation as IActivationWithRevert 
+            var derivative = activation as IActivationWithDerivat 
                 ?? throw new InvalidOperationException("Activation function must implement IActivationWithRevert for backpropagation.");
 
             float[] inputError = new float[Inputs.Length];
 
             for (int j = 0; j < nodeValues.Length; j++)
             {
-                float delta = outputError[j] * derivative.Revert(nodeValues[j]);
+                float delta = outputError[j] * derivative.Derivat(nodeValues[j]);
                 for (int i = 0; i < Inputs.Length; i++)
                 {
                     inputError[i] += weights[i, j] * delta;
