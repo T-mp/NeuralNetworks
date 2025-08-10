@@ -17,9 +17,9 @@ namespace Ivankarez.NeuralNetworks.Layers
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
 
-        private float[] nodeValues;
-        private float[] filter;
-        private float[] biases;
+        protected float[] nodeValues;
+        protected float[] filter;
+        protected float[] biases;
 
         public ConvolutionalLayer(int filterSize, int stride, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)
         {
@@ -51,7 +51,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             Parameters.Add("filter", filter);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int kernelIndex = 0; kernelIndex < OutputSize.TotalSize; kernelIndex++)
             {

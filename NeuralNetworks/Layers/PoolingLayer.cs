@@ -14,7 +14,7 @@ namespace Ivankarez.NeuralNetworks.Layers
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
 
-        private float[] nodeValues;
+        protected float[] nodeValues;
 
         public PoolingLayer(int window, int stride, PoolingType type)
         {
@@ -36,7 +36,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             State.Add("nodeValues", nodeValues);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int nodeIndex = 0; nodeIndex < nodeValues.Length; nodeIndex++)
             {

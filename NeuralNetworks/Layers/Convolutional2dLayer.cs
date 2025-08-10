@@ -18,11 +18,11 @@ namespace Ivankarez.NeuralNetworks.Layers
         public IInitializer KernelInitializer { get; }
         public IInitializer BiasInitializer { get; }
 
-        private float[] nodeValues;
-        private float[] biases;
-        private float[,] filter;
-        private int outputWidth;
-        private int outputHeight;
+        protected float[] nodeValues;
+        protected float[] biases;
+        protected float[,] filter;
+        protected int outputWidth;
+        protected int outputHeight;
 
         public Convolutional2dLayer(Size2D filterSize, Stride2D stride,
             bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)
@@ -58,7 +58,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             Parameters.Add("filter", filter);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int nodeX = 0; nodeX < outputWidth; nodeX += 1)
             {

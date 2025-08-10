@@ -15,10 +15,10 @@ namespace Ivankarez.NeuralNetworks.Layers
         public Stride2D Stride { get; }
         public PoolingType PoolingType { get; }
 
-        private readonly Func<int, int, float[], float> pooling;
-        private float[] nodeValues;
-        private int nodeValuesWidth;
-        private int nodeValuesHeight;
+        protected readonly Func<int, int, float[], float> pooling;
+        protected float[] nodeValues;
+        protected int nodeValuesWidth;
+        protected int nodeValuesHeight;
 
         public Pooling2dLayer(Size2D windowSize, Stride2D stride, PoolingType poolingType)
         {
@@ -44,7 +44,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             State.Add("nodeValues", nodeValues);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int nodeX = 0; nodeX < nodeValuesWidth; nodeX += 1)
             {

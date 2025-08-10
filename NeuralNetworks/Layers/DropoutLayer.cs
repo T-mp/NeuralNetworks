@@ -12,7 +12,7 @@ namespace Ivankarez.NeuralNetworks.Layers
         public float DropoutRate { get; }
         public IRandomProvider RandomProvider { get; }
 
-        private float[] nodeValues;
+        protected float[] nodeValues;
 
         public DropoutLayer(float dropoutRate, IRandomProvider randomProvider)
         {
@@ -29,7 +29,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             State.Add("nodeValues", nodeValues);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int i = 0; i < OutputSize.TotalSize; i++)
             {

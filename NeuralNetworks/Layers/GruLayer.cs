@@ -76,7 +76,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             }
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
             {

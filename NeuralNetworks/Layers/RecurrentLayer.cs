@@ -15,13 +15,13 @@ namespace Ivankarez.NeuralNetworks.Layers
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
 
-        private readonly IActivation activation;
-        private readonly bool useBias;
+        protected readonly IActivation activation;
+        protected readonly bool useBias;
 
-        private float[,] weights;
-        private float[] recurrentWeights;
-        private float[] nodeValues;
-        private float[] biases;
+        protected float[,] weights;
+        protected float[] recurrentWeights;
+        protected float[] nodeValues;
+        protected float[] biases;
 
         public RecurrentLayer(int nodeCount, IActivation activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer, IInitializer recurrentInitializer)
         {
@@ -52,7 +52,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             Parameters.Add("recurrentWeights", recurrentWeights);
         }
 
-        public float[] Update(float[] inputValues)
+        public virtual float[] Update(float[] inputValues)
         {
             for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
             {
