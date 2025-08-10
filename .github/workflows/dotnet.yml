@@ -21,7 +21,9 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build with Debug
-      run: dotnet build --no-restore --configuration Debug
+    - name: Build Release
+      run: dotnet build --no-restore --configuration Release
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Generate NuGet package
+      run: dotnet pack NeuralNetworks
