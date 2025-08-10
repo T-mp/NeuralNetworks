@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Authors>Károly Iván</Authors>
-    <Version>4.4.0</Version>
+    <Authors>Károly Iván, Thomas Petersilie</Authors>
+    <Version>4.4.1</Version>
     <RootNamespace>Ivankarez.NeuralNetworks</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>Ivankarez.NeuralNetworks</PackageId>
@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/ivankarez/NeuralNetworks</PackageProjectUrl>
     <PackageIcon>NeuralNetworksLogo.png</PackageIcon>
     <Copyright>Copyright (c) 2023 Iván Károly</Copyright>
-    <Description>Introducing a lightweight and specialized neural network library for C#, meticulously designed to complement evolutionary algorithms.</Description>
+    <Description>Introducing a lightweight and specialized neural network library for C#.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ivankarez/NeuralNetworks</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

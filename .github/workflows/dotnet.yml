@@ -21,9 +21,20 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build Release
-      run: dotnet build --no-restore --configuration Release
+    - name: Build
+      run: dotnet build --no-restore -c Release
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-restore --no-build -c Release --verbosity normal --results-directory ./testresults
+    # - name: ls
+    #   run: ls * */*
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: Test Reports          # Name of the check run which will be created
+        path: 'testresults/*.trx'   # Path to test results
+        reporter: dotnet-trx        # Format of test results
     - name: Generate NuGet package
-      run: dotnet pack NeuralNetworks
+      run: dotnet pack NeuralNetworks --no-build --no-restore -c Release -o packages -p:RepositoryUrl=https://github.com/T-mp/NeuralNetworks
+    - name: Publish NuGet package
+      run: dotnet nuget push packages/*.nupkg --api-key ${{ secrets.PUSH_NUGET }} --source https://nuget.pkg.github.com/T-mp/index.json
