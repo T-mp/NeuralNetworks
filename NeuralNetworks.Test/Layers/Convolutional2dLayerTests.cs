@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Ivankarez.NeuralNetworks.Api;
 using Ivankarez.NeuralNetworks.RandomGeneration.Initializers;
 using Ivankarez.NeuralNetworks.Test.TestUtils;

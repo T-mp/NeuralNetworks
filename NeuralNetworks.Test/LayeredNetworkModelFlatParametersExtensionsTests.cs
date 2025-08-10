@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Ivankarez.NeuralNetworks.Api;
 using NUnit.Framework;
 

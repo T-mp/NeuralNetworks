@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Ivankarez.NeuralNetworks.Values;
 
 namespace Ivankarez.NeuralNetworks.Test.Utils

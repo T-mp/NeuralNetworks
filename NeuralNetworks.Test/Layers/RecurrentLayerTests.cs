@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Ivankarez.NeuralNetworks.Abstractions;
 using Ivankarez.NeuralNetworks.Activations;
 using Ivankarez.NeuralNetworks.Api;
