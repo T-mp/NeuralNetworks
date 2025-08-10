@@ -25,15 +25,15 @@ jobs:
       run: dotnet build --no-restore -c Release
     - name: Test
       run: dotnet test --no-restore --no-build -c Release --verbosity normal --results-directory ./testresults
-    - name: ls
-      run: ls ./testresults
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-        name: Test Reports          # Name of the check run which will be created
-        path: 'testresults/*.trx'   # Path to test results
-        reporter: dotnet-trx        # Format of test results
+    # - name: ls
+    #   run: ls ./testresults
+    # - name: Test Report
+    #   uses: dorny/test-reporter@v1
+    #   if: success() || failure()    # run this step even if previous step failed
+    #   with:
+    #     name: Test Reports          # Name of the check run which will be created
+    #     path: 'testresults/*.trx'   # Path to test results
+    #     reporter: dotnet-trx        # Format of test results
     - name: Generate NuGet package
       run: dotnet pack NeuralNetworks --no-build --no-restore -c Release -o packages -p:RepositoryUrl=https://github.com/T-mp/NeuralNetworks
     - name: Publish NuGet package
