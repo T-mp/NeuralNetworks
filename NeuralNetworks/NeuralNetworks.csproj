@@ -21,7 +21,7 @@
     <PackageReleaseNotes>## What's Changed
 * Add layer benchmarks
 * Add GRU Layer implementation</PackageReleaseNotes>
-    <LangVersion>13.0</LangVersion>
+    <LangVersion>12.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
