@@ -37,6 +37,6 @@ jobs:
     - name: Generate NuGet package
       run: dotnet pack NeuralNetworks --no-build --no-restore -c Release -o packages -p:RepositoryUrl=https://github.com/T-mp/NeuralNetworks
     - name: Publish NuGet auf GitHub
-      run: dotnet nuget push packages/*.nupkg --api-key ${{ secrets.PUSH_NUGET }} --source https://nuget.pkg.github.com/T-mp/index.json --skip-duplicate
+      run: dotnet nuget push ./packages/*.nupkg --api-key ${{ secrets.PUSH_NUGET }} --source https://nuget.pkg.github.com/T-mp/index.json --skip-duplicate
     - name: Publish NuGet auf NuGet.org
-      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_APIKEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      run: dotnet nuget push ./packages/*.nupkg --api-key ${{ secrets.NUGET_APIKEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
