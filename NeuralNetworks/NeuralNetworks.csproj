@@ -3,24 +3,27 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Authors>Károly Iván, Thomas Petersilie</Authors>
-    <Version>4.5.0-pre</Version>
+    <Version>4.5.0-pre001</Version>
     <RootNamespace>Ivankarez.NeuralNetworks</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>t-mp.NeuralNetworks</PackageId>
     <Title>Neural Networks</Title>
-    <PackageProjectUrl>https://github.com/ivankarez/NeuralNetworks</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/T-mp/NeuralNetworks</PackageProjectUrl>
     <PackageIcon>NeuralNetworksLogo.png</PackageIcon>
     <Copyright>Copyright (c) 2023 Iván Károly, 2025 Thomas-Micheal Petersilie</Copyright>
     <Description>Introducing a lightweight and specialized neural network library for C#.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/T-mp/NeuralNetworks</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Neural Networks, Machine Learning, Genetic Algorithms, Neuro Evolution, Evolution</PackageTags>
+    <PackageTags>Neural Networks, Machine Learning, Genetic Algorithms, Neuro Evolution, Evolution, Backpropagation</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>## What's Changed
-* Add layer benchmarks
-* Add GRU Layer implementation</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      ## What's Changed
+      * Add Backpropagation
+      ** Add Derivats in the activation Classes (*ActivationWithDerivat)
+      ** Add Backpropagation Layers (*LayerWithBackpropagation)
+    </PackageReleaseNotes>
     <LangVersion>12.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -48,6 +51,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
     <PackageReference Include="Microsoft.Bcl.Numerics" Version="9.0.8" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />
   </ItemGroup>
 
 </Project>

@@ -66,7 +66,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             return nodeValues;
         }
 
-        private float DotProductWithFilter(float[] inputValue, int windowStart)
+        private float DotProductWithFilter(ReadOnlySpan<float> inputValue, int windowStart)
         {
             var sum = 0f;
             for (int i = 0; i < FilterSize; i++)

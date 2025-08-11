@@ -20,7 +20,7 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public float[] Backward(float[] outputError, float learningRate)
         {
-            var derivative = activation as IActivationWithDerivat 
+            var derivative = activation as IActivationWithDerivat
                 ?? throw new InvalidOperationException("Activation function must implement IActivationWithRevert for backpropagation.");
 
             float[] inputError = new float[Inputs.Length];
@@ -33,7 +33,10 @@ namespace Ivankarez.NeuralNetworks.Layers
                     inputError[i] += weights[i, j] * delta;
                     weights[i, j] -= learningRate * Inputs[i] * delta;  // Gewichte anpassen
                 }
-                biases[j] -= learningRate * delta;  // Bias anpassen
+                if (useBias)
+                {
+                    biases[j] -= learningRate * delta;  // Bias anpassen
+                }
             }
             return inputError; ;
         }
