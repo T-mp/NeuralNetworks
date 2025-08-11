@@ -8,7 +8,7 @@ namespace Ivankarez.NeuralNetworks.Layers
 {
     public class ConvolutionalLayer : IModelLayer
     {
-        public ISize OutputSize { get; private set; }
+        public ISize OutputSize { get; private set; } = default!;
         public int FilterSize { get; }
         public int Stride { get; }
         public bool UseBias { get; }
@@ -17,9 +17,9 @@ namespace Ivankarez.NeuralNetworks.Layers
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
 
-        protected float[] nodeValues;
-        protected float[] filter;
-        protected float[] biases;
+        protected float[] nodeValues = default!;
+        protected float[] filter = default!;
+        protected float[] biases = default!;
 
         public ConvolutionalLayer(int filterSize, int stride, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)
         {

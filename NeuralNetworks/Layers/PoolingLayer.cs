@@ -7,14 +7,14 @@ namespace Ivankarez.NeuralNetworks.Layers
 {
     public class PoolingLayer : IModelLayer
     {
-        public ISize OutputSize { get; private set; }
+        public ISize OutputSize { get; private set; } = default!;
         public int Window { get; }
         public int Stride { get; }
         public PoolingType Type { get; }
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
 
-        protected float[] nodeValues;
+        protected float[] nodeValues = default!;
 
         public PoolingLayer(int window, int stride, PoolingType type)
         {

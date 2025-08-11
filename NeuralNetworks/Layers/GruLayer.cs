@@ -19,13 +19,13 @@ namespace Ivankarez.NeuralNetworks.Layers
         public NamedVectors<float> Parameters { get; } = new NamedVectors<float>();
         public NamedVectors<float> State { get; } = new NamedVectors<float>();
 
-        public float[,] ForgetGateWeights { get; private set; }
-        public float[,] CandidateWeights { get; private set; }
-        public float[] NodeValues { get; private set; }
-        public float[] ForgetRecurrentWeights { get; private set; }
-        public float[] CandidateRecurrentWeights { get; private set; }
-        public float[] ForgetBiases { get; private set; }
-        public float[] CandidateBiases { get; private set; }
+        public float[,] ForgetGateWeights { get; private set; } = default!;
+        public float[,] CandidateWeights { get; private set; } = default!;
+        public float[] NodeValues { get; private set; } = default!;
+        public float[] ForgetRecurrentWeights { get; private set; } = default!;
+        public float[] CandidateRecurrentWeights { get; private set; } = default!;
+        public float[] ForgetBiases { get; private set; } = default!;
+        public float[] CandidateBiases { get; private set; } = default!;
 
         public GruLayer(Size1D nodeCount,
             IActivation activation,

@@ -6,13 +6,13 @@ namespace Ivankarez.NeuralNetworks.Layers
 {
     public class DropoutLayer : IModelLayer
     {
-        public ISize OutputSize { get; private set; }
+        public ISize OutputSize { get; private set; } = default!;
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
         public float DropoutRate { get; }
         public IRandomProvider RandomProvider { get; }
 
-        protected float[] nodeValues;
+        protected float[] nodeValues = default!;
 
         public DropoutLayer(float dropoutRate, IRandomProvider randomProvider)
         {

@@ -5,7 +5,7 @@ namespace Ivankarez.NeuralNetworks.Layers
 {
     public class DenseLayerWithBackpropagation : DenseLayer, IModelLayerWithBackpropagation
     {
-        protected float[] Inputs;
+        protected float[] Inputs = default!;
 
         public DenseLayerWithBackpropagation(int nodeCount, IActivationWithDerivat activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer) :
             base(nodeCount, activation, useBias, kernelInitializer, biasInitializer)

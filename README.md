@@ -11,9 +11,9 @@ I'm trying to integrate backpropagation transparently so that both learning meth
 
 ## Getting Started
 ### Install
-You can install NeuralNetworks from [NuGet](https://www.nuget.org/packages/Ivankarez.NeuralNetworks/). For Unity projects, it's is recommended to install it using [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity).
+You can install NeuralNetworks from [NuGet](https://www.nuget.org/packages/t-mp.NeuralNetworks/). For Unity projects, it's is recommended to install it using [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity).
 ```shell
-dotnet add package Ivankarez.NeuralNetworks
+dotnet add package t-mp.NeuralNetworks
 ```
 If you prefer, you can also drop it into your project as a DLL file. You can download the latest build from the [current release](https://github.com/ivankarez/NeuralNetworks/releases/latest).
 ### Basic Usage

@@ -7,8 +7,8 @@ namespace Ivankarez.NeuralNetworks.Layers
 {
     public class Pooling2dLayer : IModelLayer
     {
-        public ISize OutputSize { get; private set; }
-        public Size2D InputSize { get; set; }
+        public ISize OutputSize { get; private set; } = default!;
+        public Size2D InputSize { get; set; } = default!;
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
         public Size2D WindowSize { get; }
@@ -16,9 +16,9 @@ namespace Ivankarez.NeuralNetworks.Layers
         public PoolingType PoolingType { get; }
 
         protected readonly Func<int, int, float[], float> pooling;
-        protected float[] nodeValues;
-        protected int nodeValuesWidth;
-        protected int nodeValuesHeight;
+        protected float[] nodeValues = default!;
+        protected int nodeValuesWidth = default!;
+        protected int nodeValuesHeight = default!;
 
         public Pooling2dLayer(Size2D windowSize, Stride2D stride, PoolingType poolingType)
         {
@@ -33,8 +33,8 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public void Build(ISize inputSize)
         {
-            if (!(inputSize is Size2D)) throw new ArgumentException($"Input size must be {nameof(Size2D)}", nameof(inputSize));
-            InputSize = inputSize as Size2D;
+            if (inputSize is not Size2D) { throw new ArgumentException($"Input size must be {nameof(Size2D)}", nameof(inputSize)); }
+            InputSize = (Size2D)inputSize;
 
             nodeValuesWidth = ConvolutionUtils.CalculateOutputSize(InputSize.Width, WindowSize.Width, Stride.Horizontal);
             nodeValuesHeight = ConvolutionUtils.CalculateOutputSize(InputSize.Height, WindowSize.Height, Stride.Vertical);

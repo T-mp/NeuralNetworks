@@ -16,9 +16,9 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         protected readonly IActivation activation;
 
-        protected float[,] weights;
-        protected float[] nodeValues;
-        protected float[] biases;
+        protected float[,] weights = default!;
+        protected float[] nodeValues = default!;
+        protected float[] biases = default!;
         protected readonly bool useBias;
 
         public DenseLayer(int nodeCount, IActivation activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)

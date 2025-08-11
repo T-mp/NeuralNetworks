@@ -18,10 +18,10 @@ namespace Ivankarez.NeuralNetworks.Layers
         protected readonly IActivation activation;
         protected readonly bool useBias;
 
-        protected float[,] weights;
-        protected float[] recurrentWeights;
-        protected float[] nodeValues;
-        protected float[] biases;
+        protected float[,] weights = default!;
+        protected float[] recurrentWeights = default!;
+        protected float[] nodeValues = default!;
+        protected float[] biases = default!;
 
         public RecurrentLayer(int nodeCount, IActivation activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer, IInitializer recurrentInitializer)
         {

@@ -8,21 +8,21 @@ namespace Ivankarez.NeuralNetworks.Layers
 {
     public class Convolutional2dLayer : IModelLayer
     {
-        public ISize OutputSize { get; private set; }
+        public ISize OutputSize { get; private set; } = default!;
         public NamedVectors<float> Parameters { get; }
         public NamedVectors<float> State { get; }
-        public Size2D InputSize { get; set; }
+        public Size2D InputSize { get; set; } = default!;
         public Size2D FilterSize { get; }
         public Stride2D Stride { get; }
         public bool UseBias { get; }
         public IInitializer KernelInitializer { get; }
         public IInitializer BiasInitializer { get; }
 
-        protected float[] nodeValues;
-        protected float[] biases;
-        protected float[,] filter;
-        protected int outputWidth;
-        protected int outputHeight;
+        protected float[] nodeValues = default!;
+        protected float[] biases = default!;
+        protected float[,] filter = default!;
+        protected int outputWidth = default!;
+        protected int outputHeight = default!;
 
         public Convolutional2dLayer(Size2D filterSize, Stride2D stride,
             bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)
@@ -38,11 +38,11 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public void Build(ISize inputSize)
         {
-            if (!(inputSize is Size2D))
+            if (inputSize is not Size2D)
             {
                 throw new ArgumentException($"Input size must be {nameof(Size2D)}", nameof(inputSize));
             }
-            InputSize = inputSize as Size2D;
+            InputSize = (Size2D)inputSize;
             outputWidth = ConvolutionUtils.CalculateOutputSize(InputSize.Width, FilterSize.Width, Stride.Horizontal);
             outputHeight = ConvolutionUtils.CalculateOutputSize(InputSize.Height, FilterSize.Height, Stride.Vertical);
             OutputSize = new Size2D(outputWidth, outputHeight);

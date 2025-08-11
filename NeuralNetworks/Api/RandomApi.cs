@@ -5,7 +5,7 @@ namespace Ivankarez.NeuralNetworks.Api
 {
     public class RandomApi
     {
-        private static SystemRandomProvider defaultRandomProvider = null;
+        private static SystemRandomProvider? defaultRandomProvider = null;
 
         internal RandomApi() { }
 
@@ -28,7 +28,7 @@ namespace Ivankarez.NeuralNetworks.Api
         /// </summary>
         /// <param name="random">The Random instance to be used (defaults to the default system Random instance).</param>
         /// <returns>A SystemRandomProvider instance with the specified or default Random generator.</returns>
-        public SystemRandomProvider System(Random random = null)
+        public SystemRandomProvider System(Random? random = null)
         {
             random ??= Default().Random;
 

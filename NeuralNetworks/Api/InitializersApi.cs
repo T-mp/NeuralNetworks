@@ -27,7 +27,7 @@ namespace Ivankarez.NeuralNetworks.Api
         /// <param name="max">The maximum value for initialization (defaults to 1.0).</param>
         /// <param name="randomProvider">The random number provider to use for generating values (defaults to the default system Random).</param>
         /// <returns>A Uniform Initializer instance for the specified range and random number provider.</returns>
-        public UniformInitializer Uniform(float min = -1f, float max = 1f, IRandomProvider randomProvider = null)
+        public UniformInitializer Uniform(float min = -1f, float max = 1f, IRandomProvider? randomProvider = null)
         {
             randomProvider ??= NN.Random.Default();
 
@@ -41,7 +41,7 @@ namespace Ivankarez.NeuralNetworks.Api
         /// <param name="stdDev">The standard deviation of the Gaussian distribution (defaults to 0.05).</param>
         /// <param name="randomProvider">The random number provider to use for generating values (defaults to the default system Random).</param>
         /// <returns>A Normal Initializer instance for the specified mean, standard deviation, and random number provider.</returns>
-        public NormalInitializer Normal(float mean = 0f, float stdDev = .05f, IRandomProvider randomProvider = null)
+        public NormalInitializer Normal(float mean = 0f, float stdDev = .05f, IRandomProvider? randomProvider = null)
         {
             randomProvider ??= NN.Random.Default();
 
@@ -53,7 +53,7 @@ namespace Ivankarez.NeuralNetworks.Api
         /// </summary>
         /// <param name="randomProvider">The random number provider to use for generating values (defaults to the default system Random).</param>
         /// <returns>A Glorot Uniform Initializer instance with the specified or default random number provider.</returns>
-        public GlorotUniformInitializer GlorotUniform(IRandomProvider randomProvider = null)
+        public GlorotUniformInitializer GlorotUniform(IRandomProvider? randomProvider = null)
         {
             randomProvider ??= NN.Random.Default();
 
@@ -65,7 +65,7 @@ namespace Ivankarez.NeuralNetworks.Api
         /// </summary>
         /// <param name="randomProvider">The random number provider to use for generating values (defaults to the default system Random).</param>
         /// <returns>A Glorot Normal Initializer instance with the specified or default random number provider.</returns>
-        public GlorotNormalInitializer GlorotNormal(IRandomProvider randomProvider = null)
+        public GlorotNormalInitializer GlorotNormal(IRandomProvider? randomProvider = null)
         {
             randomProvider ??= NN.Random.Default();
 

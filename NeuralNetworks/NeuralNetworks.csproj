@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Authors>Károly Iván, Thomas Petersilie</Authors>
-    <Version>4.4.1</Version>
+    <Version>4.5.0-pre</Version>
     <RootNamespace>Ivankarez.NeuralNetworks</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>Ivankarez.NeuralNetworks</PackageId>
+    <PackageId>t-mp.NeuralNetworks</PackageId>
     <Title>Neural Networks</Title>
     <PackageProjectUrl>https://github.com/ivankarez/NeuralNetworks</PackageProjectUrl>
     <PackageIcon>NeuralNetworksLogo.png</PackageIcon>
-    <Copyright>Copyright (c) 2023 Iván Károly</Copyright>
+    <Copyright>Copyright (c) 2023 Iván Károly, 2025 Thomas-Micheal Petersilie</Copyright>
     <Description>Introducing a lightweight and specialized neural network library for C#.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/ivankarez/NeuralNetworks</RepositoryUrl>
+    <RepositoryUrl>https://github.com/T-mp/NeuralNetworks</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Neural Networks, Machine Learning, Genetic Algorithms, Neuro Evolution, Evolution</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -21,8 +21,13 @@
     <PackageReleaseNotes>## What's Changed
 * Add layer benchmarks
 * Add GRU Layer implementation</PackageReleaseNotes>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Extensions\**" />
     <EmbeddedResource Remove="Extensions\**" />
@@ -38,6 +43,11 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Bcl.Numerics" Version="9.0.8" />
   </ItemGroup>
 
 </Project>
