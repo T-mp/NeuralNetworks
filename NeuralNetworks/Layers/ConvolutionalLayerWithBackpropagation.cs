@@ -1,10 +1,11 @@
 ﻿using Ivankarez.NeuralNetworks.Abstractions;
+using System;
 
 namespace Ivankarez.NeuralNetworks.Layers
 {
     public class ConvolutionalLayerWithBackpropagation : ConvolutionalLayer, IModelLayerWithBackpropagation
     {
-        private float[] lastInput;
+        private float[]? lastInput;
         public ConvolutionalLayerWithBackpropagation(int filterSize, int stride, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer)
             : base(filterSize, stride, useBias, kernelInitializer, biasInitializer)
         { }
@@ -18,6 +19,11 @@ namespace Ivankarez.NeuralNetworks.Layers
         // Backpropagation: OutputError zurückpropagieren, Gewichte updaten
         public float[] Backward(float[] outputError, float learningRate)
         {
+            if(!IsBildet)
+                throw new InvalidOperationException("Layer must be built before Backward can be called.");
+            if (lastInput == null)
+                throw new InvalidOperationException("Update must be called before Backward to set lastInput.");
+
             // delta = outputError, da keine Aktivierung verwendet wird
             var delta = outputError;
             var inputError = new float[lastInput.Length];

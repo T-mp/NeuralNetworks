@@ -34,8 +34,10 @@ namespace Ivankarez.NeuralNetworks.Layers
             State = new NamedVectors<float>();
         }
 
+        public bool IsBildet { get; private set; } = false;
         public void Build(ISize inputSize)
         {
+            IsBildet = true;
             if (FilterSize > inputSize.TotalSize) throw new ArgumentException("filterSize cannot be more than the size of the previous layer", nameof(inputSize));
             OutputSize = new Size1D(ConvolutionUtils.CalculateOutputSize(inputSize.TotalSize, FilterSize, Stride));
 
@@ -53,6 +55,7 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public virtual float[] Update(float[] inputValues)
         {
+            if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
             for (int kernelIndex = 0; kernelIndex < OutputSize.TotalSize; kernelIndex++)
             {
                 var value = DotProductWithFilter(inputValues, kernelIndex * Stride);

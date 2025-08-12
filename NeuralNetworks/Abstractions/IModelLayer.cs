@@ -10,6 +10,7 @@ namespace Ivankarez.NeuralNetworks.Abstractions
         public NamedVectors<float> State { get; }
 
         public void Build(ISize inputSize);
+        public bool IsBildet { get; }
 
         public float[] Update(float[] inputValues);
     }

@@ -18,6 +18,8 @@ namespace Ivankarez.NeuralNetworks.Layers
         public IInitializer KernelInitializer { get; }
         public IInitializer BiasInitializer { get; }
 
+        public bool IsBildet {get; private set; }
+
         protected float[] nodeValues = default!;
         protected float[] biases = default!;
         protected float[,] filter = default!;
@@ -38,6 +40,7 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public void Build(ISize inputSize)
         {
+            IsBildet = true;
             if (inputSize is not Size2D)
             {
                 throw new ArgumentException($"Input size must be {nameof(Size2D)}", nameof(inputSize));
@@ -60,6 +63,10 @@ namespace Ivankarez.NeuralNetworks.Layers
 
         public virtual float[] Update(float[] inputValues)
         {
+            if (!IsBildet)
+            {
+                throw new InvalidOperationException("Layer must be built before updating.");
+            }
             for (int nodeX = 0; nodeX < outputWidth; nodeX += 1)
             {
                 for (int nodeY = 0; nodeY < outputHeight; nodeY += 1)

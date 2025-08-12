@@ -46,6 +46,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             BiasInitializer = biasInitializer ?? throw new ArgumentNullException(nameof(biasInitializer));
         }
 
+        public bool IsBildet { get; private set; } = false;
         public void Build(ISize inputSize)
         {
             if (inputSize == null) throw new ArgumentNullException(nameof(inputSize));
@@ -74,10 +75,14 @@ namespace Ivankarez.NeuralNetworks.Layers
                 Parameters.Add("forgetBiases", ForgetBiases);
                 Parameters.Add("candidateBiases", CandidateBiases);
             }
+
+            IsBildet = true;
         }
 
         public virtual float[] Update(float[] inputValues)
         {
+            if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
+
             for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
             {
                 UpdateCell(nodeIndex, inputValues);

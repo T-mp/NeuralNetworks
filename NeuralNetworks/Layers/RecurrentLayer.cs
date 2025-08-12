@@ -36,6 +36,7 @@ namespace Ivankarez.NeuralNetworks.Layers
             State = new NamedVectors<float>();
         }
 
+        public bool IsBildet { get; private set; } = false;
         public void Build(ISize inputSize)
         {
             weights = KernelInitializer.GenerateValues2d(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize, inputSize.TotalSize);
@@ -50,10 +51,14 @@ namespace Ivankarez.NeuralNetworks.Layers
             State.Add("nodeValues", nodeValues);
             Parameters.Add("weights", weights);
             Parameters.Add("recurrentWeights", recurrentWeights);
+            
+            IsBildet = true;
         }
 
         public virtual float[] Update(float[] inputValues)
         {
+            if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
+
             for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
             {
                 UpdateNode(nodeIndex, inputValues);

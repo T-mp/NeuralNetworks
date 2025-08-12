@@ -146,45 +146,4 @@ namespace Ivankarez.NeuralNetworks.Test.Layers
         }
 
     }
-    //public class DropoutLayerWithBackpropagationTests
-    //{
-    //    [Test]
-    //    public void Forward_TrainingMode_ShouldDropSomeValues()
-    //    {
-    //        var input = new float[] { 1f, 2f, 3f, 4f, 5f };
-
-    //        var dropout = new DropoutLayerWithBackpropagation(dropoutRate: 0.5f);
-
-    //        bool dropped = false;
-    //        for (int i = 0; i < 10; i++)
-    //        {
-    //            var output = dropout.Update(input, training: true);
-    //            if (output.Any(v => v == 0f))
-    //            {
-    //                dropped = true;
-    //                break;
-    //            }
-    //        }
-    //        dropped.Should().BeTrue();
-    //    }
-
-    //    [Test]
-    //    public void Backward_ShouldZeroOutGradients_ForDroppedPositions()
-    //    {
-    //        var input = new float[] { 1f, 1f, 1f, 1f, 1f };
-
-    //        var dropout = new DropoutLayerWithBackpropagation(0.5f);
-
-    //        dropout.Update(input, training: true);
-
-    //        var outputError = new float[] { 1f, 1f, 1f, 1f, 1f };
-    //        var inputError = dropout.Backward(outputError, learningRate: 0f);
-
-    //        for (int i = 0; i < input.Length; i++)
-    //        {
-    //            if (dropout.Mask[i] == 0f)
-    //                inputError[i].Should().Be(0f);
-    //        }
-    //    }
-    //}
 }
