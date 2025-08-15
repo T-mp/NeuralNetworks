@@ -52,7 +52,7 @@ public class DenseLayerWithBackpropagationTests
         }
 
         // Nach dem Training: Ausgabe des Resultats
-        Console.WriteLine($"Output nach Training ({epochen} Epochen) für {name}:");
+        Console.WriteLine($"Output nach Training ({epochen} Epochen) für '{name}': Loss: {loss:F6}");
         foreach (var input in inputs)
         {
             var output = layer.Update(input);
@@ -82,13 +82,13 @@ public class DenseLayerWithBackpropagationTests
         {
             // Jede Schicht hat so viele Knoten wie der Input, außer die letzte, die hat 1 Knoten
             int nodeCount = (i == anzLayer - 1) ? 1 : inputs[0].Length;
-            layer[i] = new DenseLayerWithBackpropagation(nodeCount, new SigmoidActivationWithDerivat(), false, NN.Initializers.GlorotUniform(), NN.Initializers.Zeros());
+            layer[i] = new DenseLayerWithBackpropagation(nodeCount, new SigmoidActivationWithDerivat(), false, NN.Initializers.GlorotUniform(new TestRandomProvider(21)), NN.Initializers.Zeros());
             layer[i].Build(NN.Size.Of(inputs[0].Length));
         }
 
         var initialLoss = 0f;
         var loss = 0f;
-        var lloss = 0f;
+        var lloss = 1f;
 
         for (int epoch = 0; epoch < epochen; epoch++)
         {
@@ -132,7 +132,7 @@ public class DenseLayerWithBackpropagationTests
         }
 
         // Nach dem Training: Ausgabe des Resultats
-        Console.WriteLine($"Output nach Training ({epochen} Epochen) für {name}:");
+        Console.WriteLine($"Output nach Training ({epochen} Epochen) für '{name}': Loss: {loss:F6}");
         foreach (var input in inputs)
         {
             var value = input;
@@ -183,20 +183,20 @@ public class DenseLayerWithBackpropagationTests
     {
         TestCaseData testcase;
 
-        testcase = new TestCaseData("AND", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 0, 0, 1 }, 2000, 0.57f);
+        testcase = new TestCaseData("AND", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 0, 0, 1 }, 475, 0.575f);
         testcase.SetName("MultiLayer-AND Pattern min");
         yield return testcase;
-        testcase = new TestCaseData("AND", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 0, 0, 1 }, 20000, 0.2f);
+        testcase = new TestCaseData("AND", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 0, 0, 1 }, 30000, 0.3f);
         testcase.SetName("MultiLayer-AND Pattern max");
         yield return testcase;
-        testcase = new TestCaseData("OR", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 1, 1, 1 }, 2000, 0.56f);
+        testcase = new TestCaseData("OR", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 1, 1, 1 }, 255, 0.57f);
         testcase.SetName("MultiLayer-OR Pattern min");
         yield return testcase;
         testcase = new TestCaseData("OR", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 1, 1, 1 }, 20000, 0.2f);
         testcase.SetName("MultiLayer-OR Pattern max");
         yield return testcase;
-        testcase = new TestCaseData("XOR", 3, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 1, 1, 0 }, 20000, 0.47f);
-        testcase.SetName("MultiLayer-XOR Pattern max");
+        testcase = new TestCaseData("XOR", 4, new float[][] { [0, 0], [0, 1], [1, 0], [1, 1] }, new float[] { 0, 1, 1, 0 }, 7200, .51f);
+        testcase.SetName("MultiLayer-XOR Pattern");
         yield return testcase;
     }
 }

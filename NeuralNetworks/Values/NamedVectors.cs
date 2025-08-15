@@ -32,6 +32,19 @@ namespace Ivankarez.NeuralNetworks.Values
         {
             return vectors2d[name];
         }
+        public T[,] Get2dVectorCopy(string name)
+        {
+            var source = vectors2d[name];
+            int dim0 = source.GetLength(0);
+            int dim1 = source.GetLength(1);
+            var copy = new T[dim0, dim1];
+
+            for (int i = 0; i < dim0; i++)
+                for (int j = 0; j < dim1; j++)
+                    copy[i, j] = source[i, j];
+
+            return copy;
+        }
 
         public ICollection<string> Get1dVectorNames()
         {
