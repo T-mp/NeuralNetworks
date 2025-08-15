@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ivankarez.NeuralNetworks.Values
 {
@@ -32,6 +33,7 @@ namespace Ivankarez.NeuralNetworks.Values
         {
             return vectors2d[name];
         }
+
         public T[,] Get2dVectorCopy(string name)
         {
             var source = vectors2d[name];
@@ -54,6 +56,21 @@ namespace Ivankarez.NeuralNetworks.Values
         public ICollection<string> Get2dVectorNames()
         {
             return vectors2d.Keys;
+        }
+
+        public void Clear()
+        {
+            vectors1d.Clear();
+            vectors2d.Clear();
+        }
+
+        internal bool ContainsKey1D(string v)
+        {
+            return vectors1d.ContainsKey(v);
+        }
+        internal bool ContainsKey2D(string v)
+        {
+            return vectors1d.ContainsKey(v);
         }
     }
 }
