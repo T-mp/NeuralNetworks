@@ -70,7 +70,10 @@ namespace Ivankarez.NeuralNetworks.Layers
             {
                 nodeValue += biases[nodeIndex];
             }
+            BackpropagationStateSet("lastPreAct", nodeIndex, nodeValue);
             nodeValues[nodeIndex] = activation.Apply(nodeValue);
         }
+
+        protected virtual void BackpropagationStateSet(string name, int index, float value){ }
     }
 }

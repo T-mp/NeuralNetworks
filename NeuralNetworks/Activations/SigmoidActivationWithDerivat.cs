@@ -1,4 +1,5 @@
 ﻿using Ivankarez.NeuralNetworks.Abstractions;
+using System;
 
 namespace Ivankarez.NeuralNetworks.Activations
 {
@@ -6,7 +7,8 @@ namespace Ivankarez.NeuralNetworks.Activations
     {
         public float Derivat(float input)
         {
-            return input * (1f - input);
+            var sigmoid = 1.0f / (1.0f + (float)Math.Exp(-input));
+            return sigmoid * (1f - sigmoid);
         }
     }
 }
