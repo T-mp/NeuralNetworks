@@ -4,80 +4,79 @@ using Ivankarez.NeuralNetworks.Utils;
 using Ivankarez.NeuralNetworks.Values;
 using System;
 
-namespace Ivankarez.NeuralNetworks.Layers
+namespace Ivankarez.NeuralNetworks.Layers;
+
+public class RecurrentLayer : IModelLayer
 {
-    public class RecurrentLayer : IModelLayer
+    public ISize OutputSize { get; }
+    public IInitializer KernelInitializer { get; }
+    public IInitializer BiasInitializer { get; }
+    public IInitializer RecurrentInitializer { get; }
+    public NamedVectors<float> Parameters { get; }
+    public NamedVectors<float> State { get; }
+
+    protected readonly IActivation activation;
+    protected readonly bool useBias;
+
+    protected float[,] weights = default!;
+    protected float[] recurrentWeights = default!;
+    protected float[] nodeValues = default!;
+    protected float[] biases = default!;
+
+    public RecurrentLayer(int nodeCount, IActivation activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer, IInitializer recurrentInitializer)
     {
-        public ISize OutputSize { get; }
-        public IInitializer KernelInitializer { get; }
-        public IInitializer BiasInitializer { get; }
-        public IInitializer RecurrentInitializer { get; }
-        public NamedVectors<float> Parameters { get; }
-        public NamedVectors<float> State { get; }
+        if (nodeCount <= 0) throw new ArgumentOutOfRangeException(nameof(nodeCount), "Must be bigger than zero");
+        OutputSize = new Size1D(nodeCount);
+        this.activation = activation ?? throw new ArgumentNullException(nameof(activation));
+        this.useBias = useBias;
+        KernelInitializer = kernelInitializer ?? throw new ArgumentNullException(nameof(kernelInitializer));
+        BiasInitializer = biasInitializer ?? throw new ArgumentNullException(nameof(biasInitializer));
+        RecurrentInitializer = recurrentInitializer ?? throw new ArgumentNullException(nameof(recurrentInitializer));
+        Parameters = new NamedVectors<float>();
+        State = new NamedVectors<float>();
+    }
 
-        protected readonly IActivation activation;
-        protected readonly bool useBias;
-
-        protected float[,] weights = default!;
-        protected float[] recurrentWeights = default!;
-        protected float[] nodeValues = default!;
-        protected float[] biases = default!;
-
-        public RecurrentLayer(int nodeCount, IActivation activation, bool useBias, IInitializer kernelInitializer, IInitializer biasInitializer, IInitializer recurrentInitializer)
+    public bool IsBildet { get; private set; } = false;
+    public void Build(ISize inputSize)
+    {
+        weights = KernelInitializer.GenerateValues2d(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize, inputSize.TotalSize);
+        recurrentWeights = RecurrentInitializer.GenerateValues(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize);
+        nodeValues = new float[OutputSize.TotalSize];
+        if (useBias)
         {
-            if (nodeCount <= 0) throw new ArgumentOutOfRangeException(nameof(nodeCount), "Must be bigger than zero");
-            OutputSize = new Size1D(nodeCount);
-            this.activation = activation ?? throw new ArgumentNullException(nameof(activation));
-            this.useBias = useBias;
-            KernelInitializer = kernelInitializer ?? throw new ArgumentNullException(nameof(kernelInitializer));
-            BiasInitializer = biasInitializer ?? throw new ArgumentNullException(nameof(biasInitializer));
-            RecurrentInitializer = recurrentInitializer ?? throw new ArgumentNullException(nameof(recurrentInitializer));
-            Parameters = new NamedVectors<float>();
-            State = new NamedVectors<float>();
+            biases = BiasInitializer.GenerateValues(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize);
+            Parameters.Add("biases", biases);
         }
 
-        public bool IsBildet { get; private set; } = false;
-        public void Build(ISize inputSize)
+        State.Add("nodeValues", nodeValues);
+        Parameters.Add("weights", weights);
+        Parameters.Add("recurrentWeights", recurrentWeights);
+
+        IsBildet = true;
+    }
+
+    public virtual float[] Update(float[] inputValues)
+    {
+        if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
+
+        for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
         {
-            weights = KernelInitializer.GenerateValues2d(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize, inputSize.TotalSize);
-            recurrentWeights = RecurrentInitializer.GenerateValues(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize);
-            nodeValues = new float[OutputSize.TotalSize];
-            if (useBias)
-            {
-                biases = BiasInitializer.GenerateValues(inputSize.TotalSize, OutputSize.TotalSize, OutputSize.TotalSize);
-                Parameters.Add("biases", biases);
-            }
-
-            State.Add("nodeValues", nodeValues);
-            Parameters.Add("weights", weights);
-            Parameters.Add("recurrentWeights", recurrentWeights);
-            
-            IsBildet = true;
+            UpdateNode(nodeIndex, inputValues);
         }
+        return nodeValues;
+    }
 
-        public virtual float[] Update(float[] inputValues)
+    private void UpdateNode(int nodeIndex, float[] inputValues)
+    {
+        var nodeValue = recurrentWeights[nodeIndex] * nodeValues[nodeIndex];
+        for (int inputIndex = 0; inputIndex < inputValues.Length; inputIndex++)
         {
-            if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
-
-            for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
-            {
-                UpdateNode(nodeIndex, inputValues);
-            }
-            return nodeValues;
+            nodeValue += inputValues[inputIndex] * weights[nodeIndex, inputIndex];
         }
-
-        private void UpdateNode(int nodeIndex, float[] inputValues)
+        if (useBias)
         {
-            var nodeValue = recurrentWeights[nodeIndex] * nodeValues[nodeIndex];
-            for (int inputIndex = 0; inputIndex < inputValues.Length; inputIndex++)
-            {
-                nodeValue += inputValues[inputIndex] * weights[nodeIndex, inputIndex];
-            }
-            if (useBias)
-            {
-                nodeValue += biases[nodeIndex];
-            }
-            nodeValues[nodeIndex] = activation.Apply(nodeValue);
+            nodeValue += biases[nodeIndex];
         }
+        nodeValues[nodeIndex] = activation.Apply(nodeValue);
     }
 }
