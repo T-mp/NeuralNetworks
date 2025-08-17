@@ -14,6 +14,7 @@ public class PoolingLayer : IModelLayer
     public NamedVectors<float> Parameters { get; }
     public NamedVectors<float> State { get; }
 
+    protected readonly Func<int, float[], float> pooling;
     protected float[] nodeValues = default!;
 
     public PoolingLayer(int window, int stride, PoolingType type)
@@ -27,6 +28,8 @@ public class PoolingLayer : IModelLayer
 
         Parameters = new NamedVectors<float>();
         State = new NamedVectors<float>();
+
+        pooling = GetPooling();
     }
 
     public bool IsBildet { get; private set; } = false;
@@ -38,7 +41,17 @@ public class PoolingLayer : IModelLayer
 
         IsBildet = true;
     }
-
+    private Func<int, float[], float> GetPooling()
+    {
+        return Type switch
+        {
+            PoolingType.Max => PoolByMaximum,
+            PoolingType.Average => PoolByAverage,
+            PoolingType.Min => PoolByMinimum,
+            PoolingType.Sum => PoolBySum,
+            _ => throw new NotImplementedException($"Unknown pooling {Type}"),
+        };
+    }
     public virtual float[] Update(float[] inputValues)
     {
         if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
@@ -46,22 +59,7 @@ public class PoolingLayer : IModelLayer
         for (int nodeIndex = 0; nodeIndex < nodeValues.Length; nodeIndex++)
         {
             var startIndex = nodeIndex * Stride;
-            if (Type == PoolingType.Max)
-            {
-                nodeValues[nodeIndex] = PoolByMaximum(startIndex, inputValues);
-            }
-            else if (Type == PoolingType.Average)
-            {
-                nodeValues[nodeIndex] = PoolByAverage(startIndex, inputValues);
-            }
-            else if (Type == PoolingType.Min)
-            {
-                nodeValues[nodeIndex] = PoolByMinimum(startIndex, inputValues);
-            }
-            else if (Type == PoolingType.Sum)
-            {
-                nodeValues[nodeIndex] = PoolBySum(startIndex, inputValues);
-            }
+            nodeValues[nodeIndex] = pooling(startIndex, inputValues);
         }
 
         return nodeValues;
