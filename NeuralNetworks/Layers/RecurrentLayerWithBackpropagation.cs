@@ -1,13 +1,11 @@
 ﻿using Ivankarez.NeuralNetworks.Abstractions;
+using Ivankarez.NeuralNetworks.Values;
+using System;
 
 namespace Ivankarez.NeuralNetworks.Layers;
 
 public class RecurrentLayerWithBackpropagation : RecurrentLayer, IModelLayerWithBackpropagation
 {
-    protected float[] lastInput = default!;
-    protected float[] lastPreAct = default!;
-    protected float[] lastNodeValuesBeforeUpdate = default!;
-
     public RecurrentLayerWithBackpropagation(
         int nodeCount,
         IActivationWithDerivat activation,
@@ -18,36 +16,39 @@ public class RecurrentLayerWithBackpropagation : RecurrentLayer, IModelLayerWith
         : base(nodeCount, activation, useBias, kernelInitializer, biasInitializer, recurrentInitializer)
     { }
 
+    public NamedVectors<float> BackpropagationState { get; } = new NamedVectors<float>();
+    protected override void BackpropagationStateSet(string name, int index, float value)
+    {
+        BackpropagationState.Get1dVector(name)[index] = value;
+    }
+
     public override float[] Update(float[] inputValues)
     {
-        lastInput = (float[])inputValues.Clone();
-        lastNodeValuesBeforeUpdate = (float[])nodeValues.Clone();
+        if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
 
-        lastPreAct = new float[OutputSize.TotalSize];
-        for (int nodeIndex = 0; nodeIndex < OutputSize.TotalSize; nodeIndex++)
-        {
-            var nodeValue = recurrentWeights[nodeIndex] * lastNodeValuesBeforeUpdate[nodeIndex];
-            for (int inputIndex = 0; inputIndex < inputValues.Length; inputIndex++)
-            {
-                nodeValue += inputValues[inputIndex] * weights[nodeIndex, inputIndex];
-            }
-            if (useBias)
-            {
-                nodeValue += biases[nodeIndex];
-            }
-            lastPreAct[nodeIndex] = nodeValue;
-            nodeValues[nodeIndex] = activation.Apply(nodeValue);
-        }
-        return nodeValues;
+        BackpropagationState.Clear();
+        BackpropagationState.Add("inputs", inputValues);
+        BackpropagationState.Add("preNodeValues", (float[])nodeValues.Clone());
+        BackpropagationState.Add("lastPreAct", new float[OutputSize.TotalSize]);
+
+        return base.Update(inputValues);
     }
 
     public float[] Backward(float[] outputError, float learningRate)
     {
-        int nodes = OutputSize.TotalSize;
-        int inputs = lastInput.Length;
-        float[] inputError = new float[inputs];
+        if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
+        var derivative = activation as IActivationWithDerivat
+            ?? throw new InvalidOperationException("Activation function must implement IActivationWithRevert for backpropagation.");
 
-        float[,] weightsGrad = new float[nodes, inputs];
+        var lastInput = (ReadOnlySpan<float>)BackpropagationState.Get1dVector("inputs");
+        var preNodeValues = (ReadOnlySpan<float>)BackpropagationState.Get1dVector("preNodeValues");
+        var lastPreAct = (ReadOnlySpan<float>)BackpropagationState.Get1dVector("lastPreAct");
+
+        int nodes = OutputSize.TotalSize;
+        int inputLength = lastInput.Length;
+        float[] inputError = new float[inputLength];
+
+        float[,] weightsGrad = new float[nodes, inputLength];
         float[] recurrentWeightsGrad = new float[nodes];
         float[]? biasesGrad = useBias ? new float[nodes] : null;
 
@@ -61,14 +62,14 @@ public class RecurrentLayerWithBackpropagation : RecurrentLayer, IModelLayerWith
             float delta = outputError[nodeIndex] * actPrime;
 
             // Gradienten für Input-Gewichte und Fehler auf Inputs
-            for (int inputIndex = 0; inputIndex < inputs; inputIndex++)
+            for (int inputIndex = 0; inputIndex < inputLength; inputIndex++)
             {
                 weightsGrad[nodeIndex, inputIndex] += delta * lastInput[inputIndex];
                 inputError[inputIndex] += weights[nodeIndex, inputIndex] * delta;
             }
 
             // Gradienten der rekurrenten Gewichte
-            recurrentWeightsGrad[nodeIndex] += delta * lastNodeValuesBeforeUpdate[nodeIndex];
+            recurrentWeightsGrad[nodeIndex] += delta * preNodeValues[nodeIndex];
 
             // Fehler auf vorherigen hidden state (wird ggf. in Backpropagation Through Time verwendet)
             prevStateError[nodeIndex] = recurrentWeights[nodeIndex] * delta;
@@ -82,7 +83,7 @@ public class RecurrentLayerWithBackpropagation : RecurrentLayer, IModelLayerWith
         // Parameter-Updates
         for (int nodeIndex = 0; nodeIndex < nodes; nodeIndex++)
         {
-            for (int inputIndex = 0; inputIndex < inputs; inputIndex++)
+            for (int inputIndex = 0; inputIndex < inputLength; inputIndex++)
             {
                 weights[nodeIndex, inputIndex] -= learningRate * weightsGrad[nodeIndex, inputIndex];
             }

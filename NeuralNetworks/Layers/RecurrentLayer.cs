@@ -54,7 +54,7 @@ public class RecurrentLayer : IModelLayer
 
         IsBildet = true;
     }
-
+    protected virtual void BackpropagationStateSet(string name, int index, float value) { }
     public virtual float[] Update(float[] inputValues)
     {
         if (!IsBildet) throw new InvalidOperationException("Layer must be built before updating");
@@ -77,6 +77,7 @@ public class RecurrentLayer : IModelLayer
         {
             nodeValue += biases[nodeIndex];
         }
+        BackpropagationStateSet("lastPreAct", nodeIndex, nodeValue);
         nodeValues[nodeIndex] = activation.Apply(nodeValue);
     }
 }
