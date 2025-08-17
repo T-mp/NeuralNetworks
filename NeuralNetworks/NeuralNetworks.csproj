@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Authors>Károly Iván, Thomas Petersilie</Authors>
-    <Version>4.5.0-pre003</Version>
+    <Version>4.5.0-pre004</Version>
     <RootNamespace>Ivankarez.NeuralNetworks</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>t-mp.NeuralNetworks</PackageId>
